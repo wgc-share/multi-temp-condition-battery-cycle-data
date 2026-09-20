@@ -1,65 +1,46 @@
 # Temperature-Aware SOC Estimation Dataset
 
-Version 0.1.0 (pre-publication release)
+This dataset contains processed lithium-ion battery discharge segments for state-of-charge (SOC) estimation under multiple temperatures and operating conditions. The measurements were collected using 18650-type LiNi0.6Co0.2Mn0.2O2 cells on a programmable battery test platform.
 
-This repository contains processed discharge-segment CSV files for research on lithium-ion battery state-of-charge (SOC) estimation under varied temperatures and operating conditions. The measurements were collected on an experimental platform using 18650-type LiNi0.6Co0.2Mn0.2O2 cells and a programmable battery test system with thermal control.
-
-## Dataset layout
+## File structure
 
 ```text
-random/<temperature-bin>/*.csv
-detailed/<temperature-bin>/*.csv
-dataset_manifest.csv
-SHA256SUMS.txt
+random/
+  10C/
+  15-20C/
+  25C/
+  30-35C/
+  40C/
+
+detailed/
+  10C/
+  15-20C/
+  25C/
+  30-35C/
+  40C/
 ```
 
-The five temperature bins are `10C`, `15-20C`, `25C`, `30-35C`, and `40C`.
+The `random` directory contains Staircase, Congested, Highway, and Urban current-profile families. The `detailed` directory contains US06-HWY, HWFET, REP05, EUDC, DST, ARTERIAL, UDDS, SC03, LA92, NYCC, NUREMBERG, and MANHATTAN profiles.
 
-`random` contains four randomized current-profile families: `staircase`, `congested`, `highway`, and `urban`. `detailed` contains twelve predefined current schedules: `US06_HWY`, `HWFET`, `REP05`, `EUDC`, `DST`, `ARTERIAL`, `UDDS`, `SC03`, `LA92`, `NYCC`, `NUREMBERG`, and `MANHATTAN`.
-
-Filenames use the pattern:
+Each filename follows:
 
 ```text
 <family>_<condition>_cycle<index>_cap<capacity>mAh[_repNN].csv
 ```
 
-The optional `repNN` suffix distinguishes otherwise identical public identifiers. File names deliberately do not expose internal cell identifiers or segment indices.
+`repNN` appears only when cycle and capacity are identical for multiple random samples. File names do not contain internal cell or segment identifiers.
 
-## CSV schema
+## CSV fields
 
-Each CSV contains 1 s samples with the following fields:
+| Field | Unit |
+| --- | --- |
+| `Current(mA)` | mA |
+| `Voltage(mV)` | mV |
+| `dI(mA)` | mA |
+| `dV(mV)` | mV |
+| `Power(W)` | W |
+| `RawCapacity(mAh)` | mAh |
+| `T(C)` | degC |
+| `SOC` | 0--1 |
 
-| Field | Unit | Description |
-| --- | --- | --- |
-| `Current(mA)` | mA | Measured cell current. |
-| `Voltage(mV)` | mV | Measured terminal voltage. |
-| `dI(mA)` | mA | Current difference feature. |
-| `dV(mV)` | mV | Voltage difference feature. |
-| `Power(W)` | W | Electrical power feature. |
-| `RawCapacity(mAh)` | mAh | Accumulated capacity measurement. |
-| `T(C)` | degC | Measured cell temperature. |
-| `SOC` | 0--1 | Reference state of charge. |
-
-`dataset_manifest.csv` provides the public file path, family, condition, temperature bin, cycle index, capacity-test value, anonymous replicate number, and summary acquisition metadata. Verify file integrity against `SHA256SUMS.txt` after download.
-
-## Intended use
-
-The dataset is intended for non-clinical research, benchmarking, and reproducibility studies on battery SOC estimation, temperature generalization, and incomplete-discharge estimation. It is not validated for safety-critical deployment, battery-health diagnosis, warranty decisions, or direct control of commercial products.
-
-## Citation before publication
-
-No associated article is available at this release. Cite the dataset itself using the version, repository/archive URL, release date, and rights holder(s). See `CITATION.cff`. When a DOI or paper becomes available, cite both the archived dataset version and the paper.
-
-## License and rights
-
-The public package is intended to be released under CC BY 4.0. This permits reuse, including commercial reuse, provided that appropriate attribution is given and changes are identified. The license applies only to material for which the releasing rights holder has authority to grant permission.
-
-Before release, the data owner must verify ownership of the self-collected measurements, any institutional approvals, and the rights status of every externally sourced or derived driving-cycle schedule. Do not imply endorsement by the data creators, equipment vendors, or driving-cycle owners.
-
-## Distribution guidance
-
-This dataset is approximately 1.1 GB and includes thousands of CSV files. Keep the documentation and code in GitHub, but archive the full data with a versioned release service such as Zenodo or an equivalent institutional repository. Do not rely on ordinary Git for the full CSV collection. If GitHub LFS is used, check its storage and bandwidth limits first.
-
-## Contact and release metadata
-
-Replace the placeholder rights-holder and contact information in `CITATION.cff`, `LICENSE.md`, and `RELEASE_CHECKLIST.md` before publishing.
+See `LICENSE.md` for reuse terms.
