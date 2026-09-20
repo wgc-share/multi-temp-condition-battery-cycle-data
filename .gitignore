@@ -1,0 +1,6 @@
+# Internal provenance mapping. Do not include this file in the public repository or release archive.
+dataset_manifest_internal.csv
+
+# Local operating-system files
+Thumbs.db
+Desktop.ini
